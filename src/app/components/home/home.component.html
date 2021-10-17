@@ -1,0 +1,53 @@
+<!-- <div class="main-container">
+  <header class="header header-6">
+    ...
+  </header>
+  <div class="content-container">
+    <nav class="sidenav">
+      <section class="sidenav-content">
+        <a class="nav-link nav-icon"><cds-icon shape="home"></cds-icon> Home</a>
+        <a class="nav-link"><cds-icon shape="cog"></cds-icon> Settings</a>
+        <a class="nav-link active"><cds-icon shape="user"></cds-icon> Users</a>
+        <a class="nav-link"><cds-icon shape="folder-open"></cds-icon> Files</a>
+        <a class="nav-link"><cds-icon shape="cloud"></cds-icon> Data</a>
+        <a class="nav-link"><cds-icon shape="image-gallery"></cds-icon> Photos</a>
+        <a class="nav-link"><cds-icon shape="video-gallery"></cds-icon> Videos</a>
+      </section>
+    </nav>
+    <div class="content-area">
+      ...
+    </div>
+  </div>
+</div>
+ -->
+
+
+ <clr-main-container>
+	<clr-header>
+
+		<div class="header-nav" [clr-nav-level]="1">
+			<h1>Admin HopSoapSTORE</h1>
+		</div>
+	</clr-header>
+	<div class="content-container">
+		<main class="content-area">
+			<app-show-product [products]="products"></app-show-product>
+		</main>
+		<nav class="sidenav" [clr-nav-level]="2">
+			<section class="sidenav-content">
+				<a href="javascript://" class="nav-link active"><cds-icon shape="cog"></cds-icon>
+					Products
+				</a>
+				<a href="javascript://" class="nav-link"><cds-icon shape="image-gallery"></cds-icon>
+					Orders
+				</a>
+				<a href="javascript://" class="nav-link"><cds-icon shape="user"></cds-icon>
+					Customers
+				</a>
+				<a href="javascript://" class="nav-link"><cds-icon shape="folder-open"></cds-icon>
+					Product Category
+				</a>
+			</section>
+		</nav>
+	</div>
+  </clr-main-container>
