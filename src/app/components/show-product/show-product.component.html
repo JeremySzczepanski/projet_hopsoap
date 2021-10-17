@@ -2,7 +2,11 @@
 <button class="btn btn-outline btn-sm" (click)="addProduct()">Add Product</button>
 
 <!--Modal Add or Edit-->
-<app-add-or-edit-product-modal *ngIf="productModalOpen"></app-add-or-edit-product-modal>
+<app-add-or-edit-product-modal
+*ngIf="productModalOpen"
+[product] = "selectedProduct"
+(finish)="handleFinish($event)"
+></app-add-or-edit-product-modal>
 <!--End Modal Add or Edit-->
 
 <!--Modal Delete-->

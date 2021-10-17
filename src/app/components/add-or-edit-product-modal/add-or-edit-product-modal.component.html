@@ -1,7 +1,7 @@
 <clr-wizard #wizard [clrWizardOpen]="true">
   <clr-wizard-title>{{ product ? 'Edit Product' : 'Add Product'}}</clr-wizard-title>
 
-  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+	<clr-wizard-button [type]="'cancel'" (click)="handleCancel()">Cancel</clr-wizard-button>
   <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
   <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
   <clr-wizard-button [type]="'finish'">Done</clr-wizard-button>
@@ -55,6 +55,13 @@
               <input id="stock" clrInput placeholder="stock ..." name="stock" formControlName="stock" />
       </clr-input-container>
     </div>
+
+    <ng-template clrPageButtons>
+      <clr-wizard-button [type]="'cancel'" (click)="handleCancel()">Cancel</clr-wizard-button>
+      <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+      <clr-wizard-button [type]="'next'" [clrWizardButtonDisabled]="isProductInfosInvalid">Next</clr-wizard-button>
+    </ng-template>
+
   </clr-wizard-page>
 
   <clr-wizard-page>
@@ -67,6 +74,12 @@
        <input id="image" clrInput type="file" name="image" formControlName="image" />
       </clr-input-container>
     </div>
+
+    <ng-template clrPageButtons>
+      <clr-wizard-button [type]="'cancel'" (click)="handleCancel()">Cancel</clr-wizard-button>
+      <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+      <clr-wizard-button [type]="'finish'" (click)="handleFinish()" [clrWizardButtonDisabled]="isIllustrationInvalid">Finish</clr-wizard-button>
+    </ng-template>
 
   </clr-wizard-page>
 </form>

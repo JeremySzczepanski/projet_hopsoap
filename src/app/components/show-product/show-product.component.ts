@@ -11,6 +11,8 @@ export class ShowProductComponent implements OnInit {
 
   @Input() products!: Product[];
   productModalOpen = false;
+  selectedProduct!: Product;
+
 
   constructor() { }
 
@@ -19,6 +21,7 @@ export class ShowProductComponent implements OnInit {
 
   onEdit(product: Product):void {
     this.productModalOpen = true;
+    this.selectedProduct = product;
 
   }
 
@@ -30,6 +33,17 @@ export class ShowProductComponent implements OnInit {
     this.productModalOpen = true;
   }
 
+  handleFinish(product: Product){
+    if(product){
+      console.log(product);
+      if(this.selectedProduct){
+        //Edit Product
+      }else{
+        //Add Product
+      }
+    }
+    this.productModalOpen = false;
+  }
 
 
 }

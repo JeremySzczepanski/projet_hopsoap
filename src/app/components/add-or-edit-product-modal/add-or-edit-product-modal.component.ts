@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Category } from 'src/app/models/category';
@@ -13,10 +13,12 @@ import { CategoriesService } from 'src/app/services/categories.service';
 export class AddOrEditProductModalComponent implements OnInit {
 
   @Input() product!: Product;
+  @Output() finish = new EventEmitter();
   productForm!: FormGroup;
   categories!: Category[];
   categorySub!: Subscription;
   idCategory = 1;
+
 
   constructor(private fb: FormBuilder, private categoriesService: CategoriesService) {
     this.productForm = fb.group({
@@ -36,12 +38,39 @@ export class AddOrEditProductModalComponent implements OnInit {
     this.idCategory = id;
   }
 
+  get isProductInfosInvalid(){
+    return this.productForm.get('productInfos')!.invalid;
+  }
+
+  get isIllustrationInvalid(){
+    return this.productForm.get('illustration')!.invalid;
+  }
+
+  close(){
+    this.productForm.reset();
+    this.idCategory = 1;
+  }
+
+  handleCancel(){
+    this.finish.emit();
+    this.close();
+  }
+
+  handleFinish(){
+    const product = {
+      ...this.productForm.get('productInfos')?.value,
+      ...this.productForm.get('illustration')?.value,
+      category: this.idCategory
+    }
+    this.finish.emit(product);
+    this.close();
+  }
 
   ngOnInit(): void {
     this.categorySub = this.categoriesService.getCategory().subscribe(
       (response)=>{
         this.categories = response.result;
-        console.log(this.categories);
+        //console.log(this.categories);
       }
     )
   }
