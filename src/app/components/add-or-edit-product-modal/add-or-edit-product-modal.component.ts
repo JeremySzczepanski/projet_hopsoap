@@ -79,8 +79,6 @@ export class AddOrEditProductModalComponent implements OnInit {
       return
     }
     this.file = input.files[0];
-
-
   }
 
   ngOnInit(): void {
