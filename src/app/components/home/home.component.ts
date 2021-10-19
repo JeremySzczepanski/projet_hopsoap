@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import '@cds/core/icon/register.js';
-import { ClarityIcons, userIcon, homeIcon, cogIcon, cloudIcon, imageGalleryIcon, videoGalleryIcon, folderOpenIcon} from '@cds/core/icon';
+import { ClarityIcons, userIcon, homeIcon, cogIcon, cloudIcon, imageGalleryIcon, videoGalleryIcon, folderOpenIcon, computerIcon} from '@cds/core/icon';
 import { ProductsService } from 'src/app/services/products.service';
 import { Response } from '../../models/response';
 
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   constructor(private productServices: ProductsService) { }
 
   ngOnInit(): void {
-      ClarityIcons.addIcons(userIcon, homeIcon, cogIcon, cloudIcon, imageGalleryIcon, videoGalleryIcon, folderOpenIcon  );
+      ClarityIcons.addIcons(userIcon, homeIcon, cogIcon, cloudIcon, imageGalleryIcon, videoGalleryIcon, folderOpenIcon, computerIcon  );
 
       this.productSub = this.productServices.getProducts().subscribe(
         (response: Response)=>{

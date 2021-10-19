@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { fileShareIconName } from '@cds/core/icon';
 import { Subscription } from 'rxjs';
 import { Category } from 'src/app/models/category';
 import { Product } from 'src/app/models/product';
@@ -18,6 +19,8 @@ export class AddOrEditProductModalComponent implements OnInit {
   categories!: Category[];
   categorySub!: Subscription;
   idCategory = 1;
+  file!: File;
+
 
 
   constructor(private fb: FormBuilder, private categoriesService: CategoriesService) {
@@ -62,8 +65,22 @@ export class AddOrEditProductModalComponent implements OnInit {
       ...this.productForm.get('illustration')?.value,
       category: this.idCategory
     }
+    if(this.file){
+      product.image = this.file.name;
+    }
     this.finish.emit(product);
     this.close();
+  }
+
+  detectFiles(event: Event){
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files?.length){
+      return
+    }
+    this.file = input.files[0];
+
+
   }
 
   ngOnInit(): void {
