@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { Category } from 'src/app/models/category';
 import { Product } from 'src/app/models/product';
 import { CategoriesService } from 'src/app/services/categories.service';
+import { FileUploadService } from 'src/app/services/file-upload.service';
+import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-add-or-edit-product-modal',
@@ -20,6 +22,7 @@ export class AddOrEditProductModalComponent implements OnInit {
   categorySub!: Subscription;
   idCategory = 1;
   file!: File;
+  fileService!: any;
 
 
 
@@ -68,7 +71,7 @@ export class AddOrEditProductModalComponent implements OnInit {
     if(this.file){
       product.image = this.file.name;
     }
-    this.finish.emit(product);
+    this.finish.emit({product: product, file: this.file ? this.file : null});
     this.close();
   }
 
