@@ -1,19 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { fileShareIconName } from '@cds/core/icon';
-import { Subscription } from 'rxjs';
-import { Category } from 'src/app/models/category';
-import { Product } from 'src/app/models/product';
-import { CategoriesService } from 'src/app/services/categories.service';
-import { FileUploadService } from 'src/app/services/file-upload.service';
 import { ProductsService } from 'src/app/services/products.service';
+import { Category } from 'src/app/models/category';
+import { CategoriesService } from 'src/app/services/categories.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, OnDestroy } from '@angular/core';
+import { Product } from 'src/app/models/product';
+import { Subscription } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-add-or-edit-product-modal',
   templateUrl: './add-or-edit-product-modal.component.html',
   styleUrls: ['./add-or-edit-product-modal.component.css']
 })
-export class AddOrEditProductModalComponent implements OnInit {
+export class AddOrEditProductModalComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() product!: Product;
   @Output() finish = new EventEmitter();
@@ -26,7 +26,7 @@ export class AddOrEditProductModalComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private categoriesService: CategoriesService) {
+  constructor(private fb: FormBuilder, private categoriesService: CategoriesService, private productService: ProductsService) {
     this.productForm = fb.group({
       productInfos: fb.group({
         name: ['', Validators.required],
@@ -35,7 +35,7 @@ export class AddOrEditProductModalComponent implements OnInit {
         stock: ['', Validators.required]
       }),
       illustration: fb.group({
-        image: ['',Validators.required]
+        image: [null,Validators.required]
       })
     })
    }
@@ -49,6 +49,8 @@ export class AddOrEditProductModalComponent implements OnInit {
   }
 
   get isIllustrationInvalid(){
+    if(this.product){
+      return false;}
     return this.productForm.get('illustration')!.invalid;
   }
 
@@ -63,14 +65,23 @@ export class AddOrEditProductModalComponent implements OnInit {
   }
 
   handleFinish(){
-    const product = {
+    let product = {
       ...this.productForm.get('productInfos')?.value,
       ...this.productForm.get('illustration')?.value,
-      category: this.idCategory
+      category: this.idCategory,
+      oldImage: null
     }
-    if(this.file){
+
+    if(this.product){
+      product.oldImage = this.product.oldImage;
+    }
+
+    if(this.file){                                      //permet de voir si on a choisi une image
       product.image = this.file.name;
+    }else{
+      product.image = this.product.oldImage;
     }
+
     this.finish.emit({product: product, file: this.file ? this.file : null});
     this.close();
   }
@@ -83,6 +94,28 @@ export class AddOrEditProductModalComponent implements OnInit {
     }
     this.file = input.files[0];
   }
+
+  updateForm(product: Product){
+    this.productForm.patchValue({
+      productInfos:{
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+      }
+    });
+    //console.log(product);
+    product.oldImage = product.image;
+    this.selectCategory(product.Category);
+  }
+
+  ngOnChanges(): void{
+    if(this.product){
+      this.updateForm(this.product);
+    }
+  }
+
+
 
   ngOnInit(): void {
     this.categorySub = this.categoriesService.getCategory().subscribe(
